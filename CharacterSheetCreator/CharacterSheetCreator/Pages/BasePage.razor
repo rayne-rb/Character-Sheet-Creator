@@ -1,0 +1,15 @@
+@using MudBlazor
+@page "/"
+
+<MudProgressLinear Indeterminate="true" Color="Color.Info" Size="Size.Large"/>
+
+@code {
+
+    [Inject] NavigationManager Navigation { get; set; } = default!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Navigation.NavigateTo("/Home");
+        await base.OnInitializedAsync();
+    }
+}

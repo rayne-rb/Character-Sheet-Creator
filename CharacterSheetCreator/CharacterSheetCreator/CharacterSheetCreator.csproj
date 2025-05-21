@@ -66,4 +66,17 @@
       <AdditionalFiles Include="Pages\Error.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\CharacterSheetCreation\Components\" />
+      <Folder Include="Features\CharacterSheetCreation\DbModels\" />
+      <Folder Include="Features\CharacterSheetCreation\Models\" />
+      <Folder Include="Features\CharacterSheetCreation\Repositries\" />
+      <Folder Include="Features\CharacterSheetCreation\Services\" />
+      <Folder Include="Features\CustomSheetCreation\Components\" />
+      <Folder Include="Features\CustomSheetCreation\DbModels\" />
+      <Folder Include="Features\CustomSheetCreation\Models\" />
+      <Folder Include="Features\CustomSheetCreation\Repositries\" />
+      <Folder Include="Features\CustomSheetCreation\Services\" />
+    </ItemGroup>
+
 </Project>
