@@ -11,6 +11,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.5" />
         <PackageReference Include="MudBlazor" Version="8.6.0" />
+        <PackageReference Include="OneOf" Version="3.0.271" />
         <ProjectReference Include="..\CharacterSheetCreator.Client\CharacterSheetCreator.Client.csproj"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.2"/>
     </ItemGroup>
@@ -74,9 +75,7 @@
       <Folder Include="Features\CharacterSheetCreation\Services\" />
       <Folder Include="Features\CustomSheetCreation\Components\" />
       <Folder Include="Features\CustomSheetCreation\DbModels\" />
-      <Folder Include="Features\CustomSheetCreation\Models\" />
       <Folder Include="Features\CustomSheetCreation\Repositries\" />
-      <Folder Include="Features\CustomSheetCreation\Services\" />
     </ItemGroup>
 
 </Project>
