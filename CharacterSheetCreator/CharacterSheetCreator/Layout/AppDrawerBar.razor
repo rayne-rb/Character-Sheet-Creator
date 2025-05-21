@@ -1,0 +1,27 @@
+@using MudBlazor
+@using CharacterSheetCreator.Client.Layout
+
+<MudAppBar Elevation="4" Color="Color.Primary">
+    <MudText Typo="Typo.h4" Style="font-weight: bold;">Character Sheet Creator</MudText>
+    <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@(e => DrawerToggle())" Class="ml-3"/>
+</MudAppBar>
+<MudDrawer Elevation="25" ClipMode="DrawerClipMode.Always" Breakpoint="Breakpoint.Lg" @bind-Open="_drawerOpen">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Create</MudText>
+    </MudDrawerHeader>
+    <NavMenu/>
+</MudDrawer>
+
+@code {
+
+[Parameter] public RenderFragment? AppBarContent { get; set; }
+
+private bool _drawerOpen = true;
+private bool _shouldHandleDrawerToggled = false;
+
+void DrawerToggle()
+{
+_drawerOpen = !_drawerOpen;
+}
+
+}

@@ -1,0 +1,24 @@
+﻿@using CharacterSheetCreator
+@using MudBlazor
+@using CharacterSheetCreator.Client
+@using Microsoft.AspNetCore.Components.Web
+@inherits LayoutComponentBase
+
+@* Required *@
+<MudThemeProvider @rendermode="@RenderMode.InteractiveServer"/>
+<MudPopoverProvider @rendermode="@RenderMode.InteractiveServer"/>
+
+@* Needed for dialogs *@
+<MudDialogProvider @rendermode="@RenderMode.InteractiveServer"/>
+
+@* Needed for snackbars *@
+<MudSnackbarProvider @rendermode="@RenderMode.InteractiveServer"/>
+
+<MudLayout>
+    <AppDrawerBar @rendermode="@RenderMode.InteractiveServer"/>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.False" Class="mt-2">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
