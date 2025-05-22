@@ -7,15 +7,44 @@
     <MudGrid Spacing="@Spacing">
         @foreach (var field in Fields)
         {
-            <MudItem>
+            <MudItem xs="@ItemSize">
                 <CustomField FieldType="field.FieldType" FieldName="@field.FieldName" HasLabel="field.HasLabel" LabelText="@field.LabelName"></CustomField>
             </MudItem>
         }
+        <MudItem xs="1">
+            <MudTooltip>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" OnClick="ShowAddOptions"/>
+            </MudTooltip>
+        </MudItem>
     </MudGrid>
 </MudPaper>
+
 @code {
     public int Spacing = 6;
+    public int ItemSize;
 
     public List<CustomFieldDto> Fields { get; set; } = [];
+
+    [Inject] public IDialogService DialogService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ItemSize = 12 / Fields.Count;
+        await base.OnInitializedAsync();
+    }
+
+    public async Task ShowAddOptions()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large
+        };
+        
+        var dlg = await DialogService.ShowAsync<AddOptionsDialog>("Choose something to Add", options: options);
+        if (!dlg.Result.IsCanceled)
+        {
+            
+        }
+    }
 
 }
