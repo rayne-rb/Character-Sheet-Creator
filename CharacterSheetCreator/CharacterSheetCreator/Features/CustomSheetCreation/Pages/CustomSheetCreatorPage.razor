@@ -1,3 +1,4 @@
+@using CharacterSheetCreator.Features.CustomSheetCreation.Services
 @using CustomSheetCreation.Models
 @page "/CustomSheetCreator"
 
@@ -20,14 +21,20 @@
 @code {
     public List<CustomSheetDto> CreatedSheets { get; set; } = [];
 
+    [Inject] ICustomSheetService SheetService { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
-        
+        await LoadSheets();
         await base.OnInitializedAsync();
     }
 
     public async Task LoadSheets()
     {
-        await 
+        var result = await SheetService.GetCustomSheets();
+        if (result.IsT1)
+        {
+            
+        }
     }
 }

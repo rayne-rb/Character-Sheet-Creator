@@ -1,4 +1,4 @@
-namespace CharacterSheetCreator.Shared;
+namespace CharacterSheetCreator.Shared.Utilities;
 
 public class AppError
 {

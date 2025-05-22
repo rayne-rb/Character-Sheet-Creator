@@ -1,4 +1,4 @@
-namespace CharacterSheetCreator.Shared;
+namespace CharacterSheetCreator.Shared.Requests;
 
 public class CustomSheetSearchRequest
 {
