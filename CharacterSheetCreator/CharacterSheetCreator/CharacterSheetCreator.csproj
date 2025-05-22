@@ -78,7 +78,6 @@
       <Folder Include="Features\CharacterSheetCreation\Models\" />
       <Folder Include="Features\CharacterSheetCreation\Repositries\" />
       <Folder Include="Features\CharacterSheetCreation\Services\" />
-      <Folder Include="Features\CustomSheetCreation\Components\" />
       <Folder Include="Features\CustomSheetCreation\DbModels\" />
       <Folder Include="Features\CustomSheetCreation\Repositries\" />
     </ItemGroup>

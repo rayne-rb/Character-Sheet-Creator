@@ -1,17 +1,21 @@
 @page "/CustomSheetCreator/Create"
+@using CharacterSheetCreator.Features.CustomSheetCreation.Models
+@using CharacterSheetCreator.Features.CustomSheetCreation.Components
 
 <MudText Typo="Typo.h2">Create Custom Sheet</MudText>
 <MudPaper>
     <MudGrid Spacing="@Spacing">
         @foreach (var field in Fields)
         {
-            
+            <MudItem>
+                <CustomField FieldType="field.FieldType" FieldName="@field.FieldName" HasLabel="field.HasLabel" LabelText="@field.LabelName"></CustomField>
+            </MudItem>
         }
     </MudGrid>
 </MudPaper>
 @code {
     public int Spacing = 6;
 
-    public List<string> Fields { get; set; } = [];
+    public List<CustomFieldDto> Fields { get; set; } = [];
 
 }

@@ -1,19 +1,33 @@
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
+@using Microsoft.AspNetCore.Components.Web
 @using MudBlazor
 
 <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.LibraryAdd" Color="@_buttonColour" OnClick="@(_ => ClickEvent())">Create New Sheet</MudButton>
 
 @code {
-    [Parameter] public string Href { get; set; } = "";
+    [Parameter] public string? Href { get; set; } = "";
 
-    [Inject] NavigationManager Nagivation { get; set; } = default!;
+    [Inject] NavigationManager Navigation { get; set; } = default!;
 
     private Color _buttonColour = Color.Tertiary;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+    
     public async Task ClickEvent()
     {
         if (!string.IsNullOrWhiteSpace(Href))
         {
-            Nagivation.NavigateTo(Href);
+            Navigation.NavigateTo(Href);
+            StateHasChanged();
+        }
+        else
+        {
+            ShowErrorIgnoreReturn($"Error Navigating to Page, Href is blank or Null");
+            StateHasChanged();
         }
     }
+
 }

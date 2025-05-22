@@ -1,3 +1,4 @@
+@using Microsoft.JSInterop
 @using MudBlazor
 
 <MudDialog>
@@ -34,6 +35,8 @@
     [Parameter] public string OkText { get; set; } = "Ok";
 
     [Inject] public IDialogService DialogService { get; set; } = default!;
+    
+[Inject] public IJSRuntime JsRuntime { get; set; } = default!;
 
     void Cancel()
     {

@@ -5,17 +5,16 @@
 @inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
 @page "/CustomSheetCreator"
 
-
 <MudText Typo="Typo.h2">Custom Sheets</MudText>
 <MudGrid>
     <MudItem xs="2">
         <CreateNewSheetButton Href="/CustomSheetCreator/Create"/>
     </MudItem>
-    
+
     @* TODO Create a Custom Sheets List Component *@
-    
+
     @foreach (var sheet in CreatedSheets)
-    { 
+    {
         <MudItem xs="3">
             <MudButton Variant="Variant.Outlined">
                 <MudText>@sheet.SheetName</MudText>
@@ -26,8 +25,11 @@
 
 @code {
     public List<CustomSheetDto> CreatedSheets { get; set; } = [];
+    public List<string> Vegies = ["Potato"];
 
     [Inject] ICustomSheetService SheetService { get; set; } = default!;
+
+    [Inject] new IDialogService DialogService { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,4 +49,5 @@
             CreatedSheets = result.AsT0;
         }
     }
+
 }
