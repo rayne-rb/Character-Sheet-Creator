@@ -1,5 +1,48 @@
-<h3>WarningDialog</h3>
+@using MudBlazor
+
+<MudDialog>
+    <TitleContent>
+        <MudIcon Icon="@Icons.Material.Filled.Warning"/>
+        <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <div style="max-height: 800px; overflow-y:  auto">
+            @foreach (var message in Messages)
+            {
+                <MudText>@message</MudText>
+            }
+        </div>
+    </DialogContent>
+    <DialogActions>
+        @if (ShowCancel)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="@(Cancel)">@CancelText</MudButton>
+        }
+        <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="@(Close)">@OkText</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
-    
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public List<string> Messages { get; set; } = new();
+
+    [Parameter] public bool ShowCancel { get; set; }
+
+    [Parameter] public string CancelText { get; set; } = "Cancel";
+
+    [Parameter] public string OkText { get; set; } = "Ok";
+
+    [Inject] public IDialogService DialogService { get; set; } = default!;
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    void Close()
+    {
+        MudDialog.Close();
+    }
+
 }

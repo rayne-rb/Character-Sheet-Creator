@@ -1,6 +1,9 @@
 @using CharacterSheetCreator.Features.CustomSheetCreation.Services
 @using CustomSheetCreation.Models
+@using MudBlazor.Extensions
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
 @page "/CustomSheetCreator"
+
 
 <MudText Typo="Typo.h2">Custom Sheets</MudText>
 <MudGrid>
@@ -34,7 +37,11 @@
         var result = await SheetService.GetCustomSheets();
         if (result.IsT1)
         {
-            
+            await ShowError(result.AsT1.ErrorMessage);
+        }
+        else
+        {
+            CreatedSheets = result.AsT0;
         }
     }
 }

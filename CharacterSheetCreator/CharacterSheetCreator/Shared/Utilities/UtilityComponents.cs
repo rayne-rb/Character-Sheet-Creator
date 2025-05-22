@@ -4,7 +4,7 @@ using MudBlazor;
 
 namespace CharacterSheetCreator.Shared.Utilities;
 
-public class UtilityComponents
+public class UtilityComponents : ComponentBase
 {
     [Inject] protected IDialogService DialogService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
