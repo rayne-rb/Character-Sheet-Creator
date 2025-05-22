@@ -5,10 +5,21 @@ using OneOf;
 
 namespace CharacterSheetCreator.Features.CustomSheetCreation.Services;
 
-public class CustomSheetService: ICustomSheetService
+public class CustomSheetService : ICustomSheetService
 {
-    public Task<OneOf<List<CustomSheetDto>, AppError>> GetCustomSheets()
+    public async Task<OneOf<List<CustomSheetDto>, AppError>> GetCustomSheets()
     {
-        throw new NotImplementedException();
+        var customSheet = new CustomSheetDto();
+        var customSheets = new List<CustomSheetDto>();
+        try
+        {
+            customSheets.Add(customSheet);
+        }
+        catch (Exception e)
+        {
+            return new AppError(e.Message);
+        }
+
+        return customSheets;
     }
 }

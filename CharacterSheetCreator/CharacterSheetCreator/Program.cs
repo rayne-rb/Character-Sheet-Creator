@@ -1,5 +1,6 @@
 using CharacterSheetCreator.Client.Pages;
 using CharacterSheetCreator.Features;
+using CharacterSheetCreator.Shared.Utilities;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddMudServices();
+
+var moduleInitializers = new ModuleInitializers();
+moduleInitializers.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
