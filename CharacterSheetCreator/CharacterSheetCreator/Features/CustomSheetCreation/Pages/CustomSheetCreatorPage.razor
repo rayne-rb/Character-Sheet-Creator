@@ -1,5 +1,5 @@
 @using CharacterSheetCreator.Features.CustomSheetCreation.Services
-@using CustomSheetCreation.Models
+@using CharacterSheetCreator.Features.CustomSheetCreation.Models
 @using MudBlazor.Extensions
 @using CharacterSheetCreator.Shared.Components
 @inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
@@ -11,6 +11,8 @@
     <MudItem xs="2">
         <CreateNewSheetButton Href="/CustomSheetCreator/Create"/>
     </MudItem>
+    
+    @* TODO Create a Custom Sheets List Component *@
     
     @foreach (var sheet in CreatedSheets)
     { 

@@ -1,0 +1,17 @@
+@page "/CustomSheetCreator/Create"
+
+<MudText Typo="Typo.h2">Create Custom Sheet</MudText>
+<MudPaper>
+    <MudGrid Spacing="@Spacing">
+        @foreach (var field in Fields)
+        {
+            
+        }
+    </MudGrid>
+</MudPaper>
+@code {
+    public int Spacing = 6;
+
+    public List<string> Fields { get; set; } = [];
+
+}
