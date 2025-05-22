@@ -1,6 +1,7 @@
 @using CharacterSheetCreator.Features.CustomSheetCreation.Services
 @using CustomSheetCreation.Models
 @using MudBlazor.Extensions
+@using CharacterSheetCreator.Shared.Components
 @inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
 @page "/CustomSheetCreator"
 
@@ -8,7 +9,7 @@
 <MudText Typo="Typo.h2">Custom Sheets</MudText>
 <MudGrid>
     <MudItem xs="2">
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.LibraryAdd">Create New Sheet</MudButton>
+        <CreateNewSheetButton Href="/CustomSheetCreator/Create"/>
     </MudItem>
     
     @foreach (var sheet in CreatedSheets)

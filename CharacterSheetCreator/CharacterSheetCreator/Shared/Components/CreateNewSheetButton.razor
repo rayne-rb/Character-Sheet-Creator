@@ -1,0 +1,19 @@
+@using MudBlazor
+
+<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.LibraryAdd" Color="@_buttonColour" OnClick="@(_ => ClickEvent())">Create New Sheet</MudButton>
+
+@code {
+    [Parameter] public string Href { get; set; } = "";
+
+    [Inject] NavigationManager Nagivation { get; set; } = default!;
+
+    private Color _buttonColour = Color.Tertiary;
+
+    public async Task ClickEvent()
+    {
+        if (!string.IsNullOrWhiteSpace(Href))
+        {
+            Nagivation.NavigateTo(Href);
+        }
+    }
+}
