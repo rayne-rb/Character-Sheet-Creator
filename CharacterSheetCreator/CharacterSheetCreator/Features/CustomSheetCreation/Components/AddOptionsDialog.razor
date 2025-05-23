@@ -1,6 +1,6 @@
 @using CharacterSheetCreator.Shared.Enums
 @using CharacterSheetCreator.Shared.Utilities
-<MudDialog>
+<MudDialog Style="height: 30%">
     <TitleContent>
         <MudText Typo="Typo.h6">
             @MudDialog.Title
@@ -8,9 +8,6 @@
     </TitleContent>
     <DialogContent>
         <MudGrid>
-            <MudItem xs="3">
-                <MudCheckBox T="bool" Value="AddRow" Label="Add Row" ValueChanged="AddRowChanged"></MudCheckBox>
-            </MudItem>
             <MudItem xs="3">
                 <MudCheckBox T="bool" Value="AddField" Label="Add Field" ValueChanged="AddFieldChanged"></MudCheckBox>
             </MudItem>
@@ -24,7 +21,7 @@
             </MudItem>
             @if (AddField)
             {
-                <MudItem xs="4">
+                <MudItem xs="3">
                     <MudSelect T="CustomFieldType" Label="Field Type" Variant="Variant.Outlined" Margin="Margin.Dense" Value="FieldType" ValueChanged="FieldTypeChanged">
                         @foreach (var field in FieldTypes)
                         {
@@ -34,7 +31,35 @@
                         }
                     </MudSelect>
                 </MudItem>
-                <MudItem xs="8"/>
+            }
+            else
+            {
+                <MudItem xs="3">
+                    <MudSelect Disabled="true" T="CustomFieldType" Label="Field Type" Variant="Variant.Outlined" Margin="Margin.Dense" Value="FieldType"
+                               ValueChanged="FieldTypeChanged">
+                        @foreach (var field in FieldTypes)
+                        {
+                            <MudSelectItem T="CustomFieldType" Value="field">
+                                @field.ToDescriptionString()
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            }
+
+            @if (FieldType == CustomFieldType.SelectedField)
+            {
+                <MudItem xs="12">
+                    @* <MudSelect></MudSelect> *@
+                    <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Label="Select an Attribute"></MudField>
+                </MudItem>
+            }
+            else
+            {
+                <MudItem xs="12">
+                    @* <MudSelect Disabled="true"></MudSelect> *@
+                    <MudField Margin="Margin.Dense" Variant="Variant.Outlined" Disabled="true" Label="Select an Attribute"></MudField>
+                </MudItem>
             }
         </MudGrid>
     </DialogContent>
@@ -47,7 +72,6 @@
 @code {
     [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
 
-    public bool AddRow { get; set; } = false;
     public bool AddField { get; set; } = false;
     public bool AddText { get; set; } = false;
     public int ItemSize { get; set; } = 3;
@@ -61,31 +85,19 @@
 
     void Confirm()
     {
-        MudDialog.Close(DialogResult.Ok(true));
-    }
-
-    public async Task AddRowChanged()
-    {
-        AddRow = !AddRow;
         if (AddField)
         {
-            AddField = false;
+            MudDialog.Close(DialogResult.Ok(FieldType));
         }
-
-        if (AddText)
+        else if (AddText)
         {
-            AddText = false;
+            MudDialog.Close(DialogResult.Ok(AddText));
         }
     }
 
     public async Task AddFieldChanged()
     {
         AddField = !AddField;
-        if (AddRow)
-        {
-            AddRow = false;
-        }
-
         if (AddText)
         {
             AddText = false;
@@ -95,11 +107,6 @@
     public async Task AddTextChanged()
     {
         AddText = !AddText;
-        if (AddRow)
-        {
-            AddRow = false;
-        }
-
         if (AddField)
         {
             AddField = false;
