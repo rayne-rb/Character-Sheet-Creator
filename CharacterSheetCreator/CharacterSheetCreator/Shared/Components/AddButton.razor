@@ -1,0 +1,7 @@
+@using MudBlazor
+
+<MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(()=> OnClick.InvokeAsync())"/>
+
+@code {
+    [Parameter] public EventCallback<bool> OnClick { get; set; }
+}

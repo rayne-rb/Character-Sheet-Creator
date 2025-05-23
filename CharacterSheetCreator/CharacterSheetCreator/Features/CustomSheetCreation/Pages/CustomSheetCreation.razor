@@ -1,6 +1,7 @@
 @page "/CustomSheetCreator/Create"
 @using CharacterSheetCreator.Features.CustomSheetCreation.Models
 @using CharacterSheetCreator.Features.CustomSheetCreation.Components
+@using CharacterSheetCreator.Shared.Components
 
 <MudText Typo="Typo.h2">Create Custom Sheet</MudText>
 <MudPaper>
@@ -8,12 +9,12 @@
         @foreach (var field in Fields)
         {
             <MudItem xs="@ItemSize">
-                <CustomField FieldType="field.FieldType" FieldName="@field.FieldName" HasLabel="field.HasLabel" LabelText="@field.LabelName"></CustomField>
+                <CustomField FieldType="field.FieldType" FieldName="@field.FieldName"/>
             </MudItem>
         }
         <MudItem xs="1">
             <MudTooltip>
-                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" OnClick="ShowAddOptions"/>
+                <AddButton OnClick="ShowAddOptions"/>
             </MudTooltip>
         </MudItem>
     </MudGrid>
@@ -21,7 +22,7 @@
 
 @code {
     public int Spacing = 6;
-    public int ItemSize;
+    public int ItemSize = 3;
 
     public List<CustomFieldDto> Fields { get; set; } = [];
 
@@ -29,7 +30,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ItemSize = 12 / Fields.Count;
+        // ItemSize = 12 / Fields.Count;
         await base.OnInitializedAsync();
     }
 
@@ -41,10 +42,6 @@
         };
         
         var dlg = await DialogService.ShowAsync<AddOptionsDialog>("Choose something to Add", options: options);
-        if (!dlg.Result.IsCanceled)
-        {
-            
-        }
     }
 
 }

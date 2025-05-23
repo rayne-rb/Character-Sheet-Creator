@@ -2,86 +2,31 @@
 
 @if (FieldType == CustomFieldType.StringField)
 {
-    @if (HasLabel == null)
-    {
-        <MudTextField T="string?"></MudTextField>
-    }
-    else if ((bool)HasLabel)
-    {
-        <MudStack>
-            <MudText>@LabelText</MudText>
-            <MudTextField T="string?"></MudTextField>
-        </MudStack>
-    }
+        <MudTextField T="string?" Label="@FieldName"></MudTextField>
 }
 @if (FieldType == CustomFieldType.IntegerField)
 {
-    @if (HasLabel == null)
-    {
-        <MudNumericField T="int?"></MudNumericField>
-    }
-    else if ((bool)HasLabel)
-    {
-        <MudStack>
-            <MudText>@LabelText</MudText>
-            <MudNumericField T="int?"></MudNumericField>
-        </MudStack>
-    }
+        <MudNumericField T="int?" Label="@FieldName"></MudNumericField>
 }
 @if (FieldType == CustomFieldType.DecimalField)
 {
-    @if (HasLabel == null)
-    {
-        <MudNumericField T="decimal?"></MudNumericField>
-    }
-    else if ((bool)HasLabel)
-    {
-        <MudStack>
-            <MudText>@LabelText</MudText>
-            <MudNumericField T="decimal?"></MudNumericField>
-        </MudStack>
-    }
+        <MudNumericField T="decimal?" Label="@FieldName"></MudNumericField>
 }
 @if (FieldType == CustomFieldType.BooleanField)
 {
-    @if (HasLabel == null)
-    {
-        <MudCheckBox Value="false"></MudCheckBox>
-    }
-    else if ((bool)HasLabel)
-    {
-        <MudStack>
-            <MudText>@LabelText</MudText>
-            <MudCheckBox Value="false"></MudCheckBox>
-        </MudStack>
-    }
+        <MudCheckBox Value="false" Label="@FieldName"></MudCheckBox>
 }
 
 @if (FieldType == CustomFieldType.SelectedField)
 {
-    @if (HasLabel == null)
-    {
-        <MudSelect T="string?">
-            <MudSelectItem T="string?" Value="FieldName">
-            </MudSelectItem>
-        </MudSelect>
-    }
-    else if ((bool)HasLabel)
-    {
-        <MudStack>
-            <MudText>@LabelText</MudText>
-            <MudSelect T="string?">
+        <MudSelect T="string?" Label="@FieldName">
                 <MudSelectItem T="string?" Value="FieldName">
                 </MudSelectItem>
-            </MudSelect>
-        </MudStack>
-    }
+        </MudSelect>
 }
 
 @code {
     [Parameter] public CustomFieldType FieldType { get; set; }
     [Parameter] public string FieldName { get; set; } = string.Empty;
-    [Parameter] public bool? HasLabel { get; set; } = false;
-    [Parameter] public string? LabelText { get; set; } = string.Empty;
 
 }

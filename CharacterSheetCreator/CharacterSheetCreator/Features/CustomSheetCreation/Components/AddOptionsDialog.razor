@@ -1,9 +1,42 @@
+@using CharacterSheetCreator.Shared.Enums
+@using CharacterSheetCreator.Shared.Utilities
 <MudDialog>
-    <TitleContent>@Title</TitleContent>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @MudDialog.Title
+        </MudText>
+    </TitleContent>
     <DialogContent>
-        <MudCheckBox Value="" Label="Add Row"></MudCheckBox>
-        <MudCheckBox Value="" Label="Add Field"></MudCheckBox>
-        <MudCheckBox Value="" Label="Add "></MudCheckBox>
+        <MudGrid>
+            <MudItem xs="3">
+                <MudCheckBox T="bool" Value="AddRow" Label="Add Row" ValueChanged="AddRowChanged"></MudCheckBox>
+            </MudItem>
+            <MudItem xs="3">
+                <MudCheckBox T="bool" Value="AddField" Label="Add Field" ValueChanged="AddFieldChanged"></MudCheckBox>
+            </MudItem>
+            <MudItem xs="3">
+                <MudCheckBox T="bool" Value="AddText" Label="Add Text" ValueChanged="AddTextChanged"></MudCheckBox>
+            </MudItem>
+            <MudItem xs="3">
+                <MudTooltip Text="Max Item Size is 12 (Full Width of Container)">
+                    <MudNumericField T="int" Max="12" Min="1" Value="ItemSize" Variant="Variant.Outlined" ValueChanged="ItemSizeChanged" Label="Item Size" Margin="Margin.Dense"/>
+                </MudTooltip>
+            </MudItem>
+            @if (AddField)
+            {
+                <MudItem xs="4">
+                    <MudSelect T="CustomFieldType" Label="Field Type" Variant="Variant.Outlined" Margin="Margin.Dense" Value="FieldType" ValueChanged="FieldTypeChanged">
+                        @foreach (var field in FieldTypes)
+                        {
+                            <MudSelectItem T="CustomFieldType" Value="field">
+                                @field.ToDescriptionString()
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="8"/>
+            }
+        </MudGrid>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
@@ -14,7 +47,12 @@
 @code {
     [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public string Title { get; set; } = string.Empty;
+    public bool AddRow { get; set; } = false;
+    public bool AddField { get; set; } = false;
+    public bool AddText { get; set; } = false;
+    public int ItemSize { get; set; } = 3;
+    public CustomFieldType FieldType { get; set; } = CustomFieldType.StringField;
+    public List<CustomFieldType> FieldTypes { get; set; } = [CustomFieldType.StringField, CustomFieldType.IntegerField, CustomFieldType.DecimalField, CustomFieldType.BooleanField, CustomFieldType.SelectedField];
 
     void Cancel()
     {
@@ -24,6 +62,60 @@
     void Confirm()
     {
         MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    public async Task AddRowChanged()
+    {
+        AddRow = !AddRow;
+        if (AddField)
+        {
+            AddField = false;
+        }
+
+        if (AddText)
+        {
+            AddText = false;
+        }
+    }
+
+    public async Task AddFieldChanged()
+    {
+        AddField = !AddField;
+        if (AddRow)
+        {
+            AddRow = false;
+        }
+
+        if (AddText)
+        {
+            AddText = false;
+        }
+    }
+
+    public async Task AddTextChanged()
+    {
+        AddText = !AddText;
+        if (AddRow)
+        {
+            AddRow = false;
+        }
+
+        if (AddField)
+        {
+            AddField = false;
+        }
+    }
+
+    public async Task ItemSizeChanged(int value)
+    {
+        ItemSize = value;
+        StateHasChanged();
+    }
+
+    public async Task FieldTypeChanged(CustomFieldType fieldType)
+    {
+        FieldType = fieldType;
+        StateHasChanged();
     }
 
 }
