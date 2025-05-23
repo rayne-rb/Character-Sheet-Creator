@@ -1,7 +1,44 @@
 @page "/AttributesCreator"
+@using CharacterSheetCreator.Features.AttributeCreation.Components
+@using CharacterSheetCreator.Features.AttributeCreation.Models
+@using CharacterSheetCreator.Shared.Components
 
-<MudText Typo="Typo.h2">Attributes</MudText>
+<MudText Typo="Typo.h2">Attribute Groups</MudText>
+<MudGrid>
+    <MudItem xs="1">
+        <AddButton OnClick="AddAttributeGroup"/>
+    </MudItem>
+    @foreach (var group in AttributeGroups)
+    {
+    <MudItem xs="3">
+    </MudItem>
+    }
+</MudGrid>
 
 @code {
     
+    public List<AttributeGroupsDto> AttributeGroups { get; set; }
+
+    [Inject] public IDialogService DialogService { get; set; } = default!;
+    
+    protected override Task OnInitializedAsync()
+    {
+        
+        return base.OnInitializedAsync();
+    }
+
+    public async Task LoadData()
+    {
+        
+    }
+
+    public async Task AddAttributeGroup()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Large
+        };
+
+        var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>();
+    }
 }

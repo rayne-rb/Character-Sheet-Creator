@@ -1,0 +1,35 @@
+
+<MudDialog>
+    <TitleContent>
+        <MudText>@MudDialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" Label="Group Name" Variant="Variant.Outlined" Value="GroupName" ValueChanged="GroupNameChanged"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Add">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+
+    public string GroupName { get; set; } = string.Empty;
+
+    public async Task GroupNameChanged(string groupName)
+    {
+        GroupName = groupName;
+    }
+
+    void Add()
+    {
+        MudDialog.Close(DialogResult.Ok(GroupName));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+    
+}
