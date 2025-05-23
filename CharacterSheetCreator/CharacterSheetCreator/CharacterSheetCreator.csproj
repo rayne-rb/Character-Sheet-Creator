@@ -68,8 +68,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\AttributeCreation\DbModels\" />
-      <Folder Include="Features\AttributeCreation\Repositories\" />
       <Folder Include="Features\AttributeCreation\Services\" />
       <Folder Include="Features\CharacterSheetCreation\Components\" />
       <Folder Include="Features\CharacterSheetCreation\DbModels\" />

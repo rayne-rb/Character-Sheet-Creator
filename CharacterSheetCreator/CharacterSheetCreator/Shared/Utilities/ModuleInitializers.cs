@@ -1,3 +1,4 @@
+using CharacterSheetCreator.Features.AttributeCreation;
 using CharacterSheetCreator.Features.CustomSheetCreation;
 using CharacterSheetCreator.Shared.Interfaces;
 
@@ -9,5 +10,8 @@ public class ModuleInitializers : IModuleInitializer
     {
         var customSheetModuleInitializer = new CustomSheetModuleInitializer();
         customSheetModuleInitializer.ConfigureServices(services, configuration);
+
+        var attributesModuleInitializer = new AttributesModuleInitializer();
+        attributesModuleInitializer.ConfigureServices(services, configuration);
     }
 }
