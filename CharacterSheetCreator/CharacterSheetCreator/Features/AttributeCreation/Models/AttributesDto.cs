@@ -13,4 +13,5 @@ public class AttributeDto
     public int AttributeId { get; set; }
     public string? AttributeName { get; set; } = string.Empty;
     public int AttributeGroupId { get; set; }
+    
 }

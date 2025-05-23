@@ -6,30 +6,37 @@
 <MudText Typo="Typo.h2">Attribute Groups</MudText>
 <MudGrid>
     <MudItem xs="1">
-        <AddButton OnClick="AddAttributeGroup"/>
+        <MudTooltip Text="Add Group">
+            <AddButton OnClick="AddAttributeGroup"/>
+        </MudTooltip>
     </MudItem>
     @foreach (var group in AttributeGroups)
     {
-    <MudItem xs="3">
-    </MudItem>
+        <MudItem xs="3">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="EditGroupAttributes">@group.AttributeGroupName</MudButton>
+        </MudItem>
     }
 </MudGrid>
 
 @code {
-    
-    public List<AttributeGroupsDto> AttributeGroups { get; set; }
+
+    public List<AttributeGroupsDto> AttributeGroups { get; set; } = [];
 
     [Inject] public IDialogService DialogService { get; set; } = default!;
-    
+
     protected override Task OnInitializedAsync()
     {
-        
         return base.OnInitializedAsync();
     }
 
     public async Task LoadData()
     {
-        
+        var attributeGroup = new AttributeGroupsDto()
+        {
+            AttributeGroupId = 1,
+            AttributeGroupName = "Group 1",
+            Attributes = null
+        };
     }
 
     public async Task AddAttributeGroup()
@@ -39,6 +46,18 @@
             MaxWidth = MaxWidth.Large
         };
 
-        var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>();
+        var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
+        // var dlgResult = dlg.Result;
     }
+
+    public async Task EditGroupAttributes()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Large
+        };
+
+        var dlg = await DialogService.ShowAsync<EditAttributesDialog>("Edit Group Attributes", options);
+    }
+
 }
