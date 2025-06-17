@@ -41,6 +41,12 @@ public class AttributesService(IAttributesRepository attributesRepository) : IAt
         try
         {
             var result = await _attributesRepository.CreateAttributeGroup(groupName);
+            if (result.IsT1)
+            {
+                return new AppError(result.AsT1.ErrorMessage);
+            }
+
+            return result.AsT0;
         }
         catch (Exception e)
         {

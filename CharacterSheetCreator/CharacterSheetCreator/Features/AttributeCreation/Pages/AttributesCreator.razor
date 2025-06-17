@@ -54,6 +54,15 @@
         };
 
         var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
+        var dlgResult = dlg.Result.Result;
+        if (!dlgResult.Canceled)
+        {
+            if((bool)dlgResult.Data == false)
+            {
+                ShowErrorIgnoreReturn("Error Creating Attribute Group");
+            }
+        }
+        ShowSuccess("Attribute Created Successfully");
         await LoadData();
         StateHasChanged();
     } 

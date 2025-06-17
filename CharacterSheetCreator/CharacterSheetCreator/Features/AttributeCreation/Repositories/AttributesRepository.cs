@@ -57,7 +57,7 @@ public class AttributesRepository : IAttributesRepository
         await using var connection = _connectionFactory.GetDbConnection();
         try
         {
-            var id = 0;
+            var _id = 0;
             var sql = """
                       INSERT INTO public.attribute_groups (id, group_name)
                       VALUES (@id, @group_name);
@@ -70,12 +70,21 @@ public class AttributesRepository : IAttributesRepository
 
             if (existingGroupResult.AsT0.Count <= 0)
             {
-                id = 1;
+                _id = 1;
             }
             else
             {
-                
+                _id = existingGroupResult.AsT0.Max(x => x.id) + 1;
             }
+            var parameters = new {id = _id, group_name = groupName};
+            
+            var rowsAffected = await connection.ExecuteNonQueryAsync(sql, parameters);
+            if (rowsAffected == 0 || rowsAffected > 1)
+            {
+                return false;
+            }
+
+            return true;
         }
         catch (Exception e)
         {

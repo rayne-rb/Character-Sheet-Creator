@@ -26,8 +26,19 @@
 
     private async Task Add()
     {
-        await AttributesService.CreateNewAttributeGroup(GroupName);
-        MudDialog.Close();
+        var result = await AttributesService.CreateAttributeGroup(GroupName);
+        if(result.IsT1)
+        {
+            MudDialog.Close(DialogResult.Ok(false));
+        }
+        else if (!result.AsT0)
+        {
+            MudDialog.Close(DialogResult.Ok(false));
+        }
+        else
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
     }
 
     void Cancel()
