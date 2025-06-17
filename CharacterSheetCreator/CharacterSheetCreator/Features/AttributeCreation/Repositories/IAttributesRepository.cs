@@ -1,3 +1,4 @@
+using System.Data;
 using CharacterSheetCreator.Features.AttributeCreation.DbModels;
 using CharacterSheetCreator.Shared.Utilities;
 using OneOf;
@@ -7,6 +8,6 @@ namespace CharacterSheetCreator.Features.AttributeCreation.Repositories;
 public interface IAttributesRepository
 {
     Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups(); 
-    Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName);
+    Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection connection, IDbTransaction transaction);
     
 }

@@ -6,4 +6,5 @@ public interface IPgSqlDataSource
 {
     NpgsqlConnection GetDbConnection();
     Task<NpgsqlConnection> GetDbConnectionAsync();
+    
 }

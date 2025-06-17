@@ -8,8 +8,8 @@
         <MudTextField T="string" Label="Group Name" Variant="Variant.Outlined" Value="GroupName" ValueChanged="GroupNameChanged"></MudTextField>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Add">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -24,26 +24,14 @@
         GroupName = groupName;
     }
 
-    private async Task Add()
+    void Add()
     {
-        var result = await AttributesService.CreateAttributeGroup(GroupName);
-        if(result.IsT1)
-        {
-            MudDialog.Close(DialogResult.Ok(false));
-        }
-        else if (!result.AsT0)
-        {
-            MudDialog.Close(DialogResult.Ok(false));
-        }
-        else
-        {
-            MudDialog.Close(DialogResult.Ok(true));
-        }
+        MudDialog.Close();
     }
 
     void Cancel()
     {
-        MudDialog.Cancel();
+        MudDialog.Close();
     }
     
 }

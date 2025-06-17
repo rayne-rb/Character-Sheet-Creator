@@ -52,9 +52,15 @@ public class AttributesRepository : IAttributesRepository
         
     }
 
-    public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName)
+    public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection connection,
+        IDbTransaction transaction = null)
     {
-        await using var connection = _connectionFactory.GetDbConnection();
+        var connectionPassed = true;
+        if (connection == null)
+        {
+            (connection, transaction) = _connectionFactory.();
+            connectionPassed = false;
+        }
         try
         {
             var _id = 0;
