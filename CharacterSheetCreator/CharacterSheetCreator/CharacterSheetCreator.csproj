@@ -73,7 +73,6 @@
 
     <ItemGroup>
       <Folder Include="Data\Sql\" />
-      <Folder Include="Features\AttributeCreation\Services\" />
       <Folder Include="Features\CharacterSheetCreation\Components\" />
       <Folder Include="Features\CharacterSheetCreation\DbModels\" />
       <Folder Include="Features\CharacterSheetCreation\Models\" />

@@ -47,8 +47,8 @@
         };
 
         var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
-        // var dlgResult = dlg.Result;
-    }
+        StateHasChanged();
+    } 
 
     public async Task EditGroupAttributes()
     {
