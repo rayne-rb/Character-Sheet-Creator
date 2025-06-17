@@ -1,9 +1,13 @@
 using CharacterSheetCreator.Client.Pages;
+using CharacterSheetCreator.Data.Services;
 using CharacterSheetCreator.Features;
 using CharacterSheetCreator.Shared.Utilities;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionFactory = new PgSqlDataSource(connectionString);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -11,6 +15,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddMudServices();
+builder.Services.AddSingleton<IPgSqlDataSource>(provider => connectionFactory);
 
 var moduleInitializers = new ModuleInitializers();
 moduleInitializers.ConfigureServices(builder.Services, builder.Configuration);

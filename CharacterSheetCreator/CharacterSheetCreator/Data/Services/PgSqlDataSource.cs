@@ -2,19 +2,13 @@ using Npgsql;
 
 namespace CharacterSheetCreator.Data.Services;
 
-public interface IDatabaseManager
-{
-    NpgsqlConnection GetDbConnection();
-    Task<NpgsqlConnection> GetDbConnectionAsync();
-}
-
-public class DatabaseManager : IDatabaseManager, IDisposable, IAsyncDisposable
+public class PgSqlDataSource : IPgSqlDataSource, IDisposable, IAsyncDisposable
 {
     private readonly string _connectionString;
     private readonly NpgsqlDataSourceBuilder _dataSourceBuilder;
     private readonly NpgsqlDataSource _dataSource;
 
-    public DatabaseManager(string connectionString)
+    public PgSqlDataSource(string connectionString)
     {
         _connectionString = connectionString;
         _dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
