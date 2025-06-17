@@ -30,7 +30,7 @@ public class AttributesRepository : IAttributesRepository
         return (connection, transaction);
     }
 
-    public async Task<OneOf<List<DbAttributeGroups>, AppError>> GetAttributeGroups()
+    public async Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups()
     {
         await using var connection = _connectionFactory.GetDbConnection();
         try
@@ -38,10 +38,10 @@ public class AttributesRepository : IAttributesRepository
             var sql = """
                       SELECT * FROM attribute_groups
                       """;
-            var results = await connection.ExecuteQueryAsync<DbAttributeGroups>(sql);
+            var results = await connection.ExecuteQueryAsync<DbAttributeGroup>(sql);
             if (results == null)
             {
-                return new AppError();
+                return new List<DbAttributeGroup>();
             }
             return results.ToList();
         }
@@ -50,5 +50,36 @@ public class AttributesRepository : IAttributesRepository
             return new AppError($"Error getting attribute groups: {e.Message}");
         }
         
+    }
+
+    public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName)
+    {
+        await using var connection = _connectionFactory.GetDbConnection();
+        try
+        {
+            var id = 0;
+            var sql = """
+                      INSERT INTO public.attribute_groups (id, group_name)
+                      VALUES (@id, @group_name);
+                      """;
+            var existingGroupResult = await GetAttributeGroups();
+            if (existingGroupResult.IsT1)
+            {
+                return new AppError("Error Getting existing attribute groups");
+            }
+
+            if (existingGroupResult.AsT0.Count <= 0)
+            {
+                id = 1;
+            }
+            else
+            {
+                
+            }
+        }
+        catch (Exception e)
+        {
+            return new AppError($"Error creating attribute group: {e.Message}");
+        }
     }
 }

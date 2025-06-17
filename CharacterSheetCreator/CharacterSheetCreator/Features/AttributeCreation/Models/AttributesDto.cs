@@ -4,7 +4,6 @@ public class AttributeGroupsDto
 {
     public int AttributeGroupId { get; set; }
     public string? AttributeGroupName { get; set; } = string.Empty;
-    public List<AttributeDto?> Attributes { get; set; } = new List<AttributeDto?>();
     
 }
 

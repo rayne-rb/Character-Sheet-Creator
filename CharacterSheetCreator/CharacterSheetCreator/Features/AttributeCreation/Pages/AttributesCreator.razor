@@ -1,7 +1,10 @@
 @page "/AttributesCreator"
 @using CharacterSheetCreator.Features.AttributeCreation.Components
 @using CharacterSheetCreator.Features.AttributeCreation.Models
+@using CharacterSheetCreator.Features.AttributeCreation.Services
 @using CharacterSheetCreator.Shared.Components
+
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
 
 <MudText Typo="Typo.h2">Attribute Groups</MudText>
 <MudGrid>
@@ -23,20 +26,24 @@
     public List<AttributeGroupsDto> AttributeGroups { get; set; } = [];
 
     [Inject] public IDialogService DialogService { get; set; } = default!;
+    [Inject] public IAttributesService AttributesService { get; set; } = default!;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        await LoadData();
+        await base.OnInitializedAsync();
     }
 
     public async Task LoadData()
     {
-        var attributeGroup = new AttributeGroupsDto()
+        var result = await AttributesService.GetAttributeGroups();
+        if (result.IsT1)
         {
-            AttributeGroupId = 1,
-            AttributeGroupName = "Group 1",
-            Attributes = null
-        };
+            await ShowError("Error Loading Attributes");
+        }
+
+        AttributeGroups = result.AsT0;
+        StateHasChanged();
     }
 
     public async Task AddAttributeGroup()
@@ -47,6 +54,7 @@
         };
 
         var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
+        await LoadData();
         StateHasChanged();
     } 
 

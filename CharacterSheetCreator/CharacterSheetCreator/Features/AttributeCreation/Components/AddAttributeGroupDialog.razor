@@ -1,3 +1,4 @@
+@using CharacterSheetCreator.Features.AttributeCreation.Services
 
 <MudDialog>
     <TitleContent>
@@ -14,7 +15,7 @@
 
 @code {
     [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
-    [Inject] 
+    [Inject] public IAttributesService AttributesService { get; set; }
 
     public string? GroupName { get; set; } = string.Empty;
 
@@ -23,9 +24,9 @@
         GroupName = groupName;
     }
 
-    void Add()
+    private async Task Add()
     {
-        
+        await AttributesService.CreateNewAttributeGroup(GroupName);
         MudDialog.Close();
     }
 

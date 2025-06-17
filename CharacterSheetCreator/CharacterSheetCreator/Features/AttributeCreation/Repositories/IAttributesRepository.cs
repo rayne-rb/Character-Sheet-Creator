@@ -6,6 +6,7 @@ namespace CharacterSheetCreator.Features.AttributeCreation.Repositories;
 
 public interface IAttributesRepository
 {
-    Task<OneOf<List<DbAttributeGroups>, AppError>> GetAttributeGroups(); 
+    Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups(); 
+    Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName);
     
 }

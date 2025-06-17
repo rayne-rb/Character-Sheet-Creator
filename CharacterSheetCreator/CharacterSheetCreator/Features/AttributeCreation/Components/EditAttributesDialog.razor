@@ -5,7 +5,7 @@
         @MudDialog.Title
     </TitleContent>
     <DialogContent>
-        <MudTable Items="@Group.Attributes" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@Loading" LoadingProgressColor="Color.Info">
+        <MudTable Items="@Attributes" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@Loading" LoadingProgressColor="Color.Info">
             <HeaderContent>
                 <MudTh>Attribute Id</MudTh>
                 <MudTh>Attribute Name</MudTh>
@@ -28,6 +28,7 @@
     [Parameter] public int GroupId { get; set; }
     
     public AttributeGroupsDto Group { get; set; }
+    public List<AttributeDto> Attributes { get; set; }
 
     public bool Loading { get; set; } = true;
     protected override Task OnInitializedAsync()
