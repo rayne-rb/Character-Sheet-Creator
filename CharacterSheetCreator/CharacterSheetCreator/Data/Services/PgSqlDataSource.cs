@@ -25,6 +25,13 @@ public class PgSqlDataSource : IPgSqlDataSource, IDisposable, IAsyncDisposable
         return await _dataSource.OpenConnectionAsync();
     }
 
+    public (NpgsqlConnection connection, NpgsqlTransaction transaction) BeginTransaction()
+    {
+        var connection = GetDbConnection();
+        var transaction = connection.BeginTransaction();
+        return (connection, transaction);
+    }
+
     public void Dispose()
     {
         _dataSource.Dispose();

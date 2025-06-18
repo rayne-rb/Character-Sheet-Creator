@@ -56,11 +56,13 @@ public class AttributesRepository : IAttributesRepository
         IDbTransaction transaction = null)
     {
         var connectionPassed = true;
+        var error = true;
         if (connection == null)
         {
-            (connection, transaction) = _connectionFactory.();
+            (connection, transaction) = _connectionFactory.BeginTransaction();
             connectionPassed = false;
         }
+
         try
         {
             var _id = 0;
@@ -82,8 +84,9 @@ public class AttributesRepository : IAttributesRepository
             {
                 _id = existingGroupResult.AsT0.Max(x => x.id) + 1;
             }
+
             var parameters = new {id = _id, group_name = groupName};
-            
+
             var rowsAffected = await connection.ExecuteNonQueryAsync(sql, parameters);
             if (rowsAffected == 0 || rowsAffected > 1)
             {
@@ -95,6 +98,13 @@ public class AttributesRepository : IAttributesRepository
         catch (Exception e)
         {
             return new AppError($"Error creating attribute group: {e.Message}");
+        }
+        finally
+        {
+            if (!connectionPassed)
+            {
+                
+            }
         }
     }
 }

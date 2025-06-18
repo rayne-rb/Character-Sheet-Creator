@@ -6,5 +6,5 @@ public interface IPgSqlDataSource
 {
     NpgsqlConnection GetDbConnection();
     Task<NpgsqlConnection> GetDbConnectionAsync();
-    
+    (NpgsqlConnection connection, NpgsqlTransaction transaction) BeginTransaction();
 }
