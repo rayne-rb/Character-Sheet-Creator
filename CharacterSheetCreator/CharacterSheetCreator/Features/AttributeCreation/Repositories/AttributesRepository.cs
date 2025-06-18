@@ -52,8 +52,8 @@ public class AttributesRepository : IAttributesRepository
         
     }
 
-    public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection connection,
-        IDbTransaction transaction = null)
+    public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection? connection = null,
+        IDbTransaction? transaction = null)
     {
         var connectionPassed = true;
         var error = true;

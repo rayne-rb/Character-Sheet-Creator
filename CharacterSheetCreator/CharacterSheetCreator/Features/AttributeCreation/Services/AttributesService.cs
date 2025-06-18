@@ -1,3 +1,4 @@
+using CharacterSheetCreator.Data.Services;
 using CharacterSheetCreator.Features.AttributeCreation.Models;
 using CharacterSheetCreator.Features.AttributeCreation.Repositories;
 using CharacterSheetCreator.Shared.Utilities;
@@ -8,7 +9,8 @@ namespace CharacterSheetCreator.Features.AttributeCreation.Services;
 public class AttributesService(IAttributesRepository attributesRepository) : IAttributesService
 {
     private IAttributesRepository _attributesRepository = attributesRepository;
-
+    private readonly IPgSqlDataSource _connectionFactory;
+    
     public async Task<OneOf<List<AttributeGroupsDto>, AppError>> GetAttributeGroups()
     {
         try
@@ -38,9 +40,10 @@ public class AttributesService(IAttributesRepository attributesRepository) : IAt
 
     public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName)
     {
+        var (connection, transaction) = _connectionFactory.BeginTransaction();
         try
         {
-            var result = await _attributesRepository.CreateAttributeGroup(groupName, null, null);
+            var result = await _attributesRepository.CreateAttributeGroup(groupName, connection, transaction);
             if (result.IsT1)
             {
                 return new AppError(result.AsT1.ErrorMessage);

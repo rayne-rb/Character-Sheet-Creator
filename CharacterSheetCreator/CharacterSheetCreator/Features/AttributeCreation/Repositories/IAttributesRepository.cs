@@ -8,5 +8,5 @@ namespace CharacterSheetCreator.Features.AttributeCreation.Repositories;
 public interface IAttributesRepository
 {
     Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups(); 
-    Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection connection, IDbTransaction transaction);
+    Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection? connection = null, IDbTransaction? transaction = null);
 }
