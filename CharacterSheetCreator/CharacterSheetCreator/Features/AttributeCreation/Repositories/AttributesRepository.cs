@@ -103,7 +103,16 @@ public class AttributesRepository : IAttributesRepository
         {
             if (!connectionPassed)
             {
-                
+                if (!error)
+                {
+                    transaction.Commit();
+                }
+                else
+                {
+                    transaction.Rollback();
+                }
+                transaction.Dispose();
+                connection.Dispose();
             }
         }
     }
