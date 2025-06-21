@@ -1,10 +1,20 @@
+using System.Data;
 using CharacterSheetCreator.Client.Pages;
 using CharacterSheetCreator.Data.Services;
 using CharacterSheetCreator.Features;
 using CharacterSheetCreator.Shared.Utilities;
 using MudBlazor.Services;
+using RepoDb;
 
 var builder = WebApplication.CreateBuilder(args);
+
+GlobalConfiguration
+    .Setup(new()
+    {
+        EnumDefaultDatabaseType = DbType.Int32,
+        
+    })
+    .UsePostgreSql();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var connectionFactory = new PgSqlDataSource(connectionString);

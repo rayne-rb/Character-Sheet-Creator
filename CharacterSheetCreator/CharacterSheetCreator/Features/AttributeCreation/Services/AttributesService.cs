@@ -6,10 +6,16 @@ using OneOf;
 
 namespace CharacterSheetCreator.Features.AttributeCreation.Services;
 
-public class AttributesService(IAttributesRepository attributesRepository) : IAttributesService
+public class AttributesService : IAttributesService
 {
-    private IAttributesRepository _attributesRepository = attributesRepository;
+    private IAttributesRepository _attributesRepository;
     private readonly IPgSqlDataSource _connectionFactory;
+
+    public AttributesService(IAttributesRepository attributesRepository,IPgSqlDataSource connectionFactory)
+    {
+        _attributesRepository = attributesRepository;
+        _connectionFactory = connectionFactory;
+    }
     
     public async Task<OneOf<List<AttributeGroupsDto>, AppError>> GetAttributeGroups()
     {
@@ -40,10 +46,9 @@ public class AttributesService(IAttributesRepository attributesRepository) : IAt
 
     public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName)
     {
-        var (connection, transaction) = _connectionFactory.BeginTransaction();
         try
         {
-            var result = await _attributesRepository.CreateAttributeGroup(groupName, connection, transaction);
+            var result = await _attributesRepository.CreateAttributeGroup(groupName);
             if (result.IsT1)
             {
                 return new AppError(result.AsT1.ErrorMessage);

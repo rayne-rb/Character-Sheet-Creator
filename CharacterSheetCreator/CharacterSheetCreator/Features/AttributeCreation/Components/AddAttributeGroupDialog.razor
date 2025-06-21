@@ -1,37 +1,58 @@
 @using CharacterSheetCreator.Features.AttributeCreation.Services
 
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
+
 <MudDialog>
     <TitleContent>
         <MudText>@MudDialog.Title</MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" Label="Group Name" Variant="Variant.Outlined" Value="GroupName" ValueChanged="GroupNameChanged"></MudTextField>
+        <MudTextField T="string?" Label="Group Name" Variant="Variant.Outlined" @bind-Value="GroupName"
+                      Immediate="true"></MudTextField>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add</MudButton>
+        <MudButton Disabled="@(string.IsNullOrEmpty(GroupName) || string.IsNullOrWhiteSpace(GroupName))"
+                   Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
-    [Inject] public IAttributesService AttributesService { get; set; }
+    [Inject] public IAttributesService AttributesService { get; set; } = default!;
 
     public string? GroupName { get; set; } = string.Empty;
 
-    public async Task GroupNameChanged(string groupName)
+    protected override Task OnInitializedAsync()
     {
-        GroupName = groupName;
+        return base.OnInitializedAsync();
     }
 
-    void Add()
+    public async Task Add()
     {
-        MudDialog.Close();
+        var result = await AttributesService.CreateAttributeGroup(GroupName);
+        if (result.IsT1)
+        {
+            await ShowError($"Error Creating Group: {result.AsT1.ErrorMessage}");
+        }
+        else
+        {
+            if (!result.AsT0)
+            {
+                await ShowError("No Rows Affected", "Error Creating Group");
+            }
+            else
+            {
+                ShowSuccess("Group Created Successfully");
+                MudDialog.Close();
+            }
+        }
     }
 
     void Cancel()
     {
         MudDialog.Close();
     }
-    
+
 }

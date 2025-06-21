@@ -16,19 +16,6 @@ public class AttributesRepository : IAttributesRepository
     {
         _connectionFactory = connectionFactory;
     }
-    public NpgsqlConnection GetDbConnection()
-    {
-        var connection = _connectionFactory.GetDbConnection();
-        if (connection.State != ConnectionState.Open)
-            connection.Open();
-        return connection;
-    }
-    public (NpgsqlConnection connection, NpgsqlTransaction transaction) BeginTransaction()
-    {
-        var connection = GetDbConnection();
-        var transaction = connection.BeginTransaction();
-        return (connection, transaction);
-    }
 
     public async Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups()
     {
@@ -68,7 +55,7 @@ public class AttributesRepository : IAttributesRepository
             var _id = 0;
             var sql = """
                       INSERT INTO public.attribute_groups (id, group_name)
-                      VALUES (@id, @group_name);
+                      VALUES (@group_id, @name);
                       """;
             var existingGroupResult = await GetAttributeGroups();
             if (existingGroupResult.IsT1)
@@ -85,14 +72,11 @@ public class AttributesRepository : IAttributesRepository
                 _id = existingGroupResult.AsT0.Max(x => x.id) + 1;
             }
 
-            var parameters = new {id = _id, group_name = groupName};
+            var parameters = new {group_id = _id, name = groupName};
 
-            var rowsAffected = await connection.ExecuteNonQueryAsync(sql, parameters);
-            if (rowsAffected == 0 || rowsAffected > 1)
-            {
-                return false;
-            }
+            await connection.ExecuteQueryAsync(sql, parameters);
 
+            error = false;
             return true;
         }
         catch (Exception e)
