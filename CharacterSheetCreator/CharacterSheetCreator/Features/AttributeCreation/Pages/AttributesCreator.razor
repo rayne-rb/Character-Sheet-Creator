@@ -63,11 +63,7 @@
         };
 
         var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
-        // var dlgResult = dlg.Result.Result;
-        // if (!dlgResult.Canceled)
             
-        // ShowSuccess("Attribute Created Successfully");
-        // await LoadData();
         StateHasChanged();
     } 
 
@@ -78,7 +74,8 @@
             MaxWidth = MaxWidth.Large
         };
 
-        var dlg = await DialogService.ShowAsync<EditAttributesDialog>("Edit Group Attributes", options);
+        var dlg = await DialogService.ShowAsync<EditAttributeGroupDialog>("Edit Group Attributes", options);
+        StateHasChanged();
     }
 
 }

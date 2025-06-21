@@ -1,0 +1,80 @@
+@using CharacterSheetCreator.Features.AttributeCreation.Models
+@using Microsoft.AspNetCore.Http.HttpResults
+@using CharacterSheetCreator.Shared.Components
+<MudDialog Style="height: 50%">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Row="true">
+            <MudTable T="AttributeDto?" Dense="true" LoadingProgressColor="Color.Info" Breakpoint="Breakpoint.Sm"
+                      Loading="@Loading" Items="@Attributes" Hover="true" OnRowClick="@(args => EditAttribute(args))">
+                <HeaderContent>
+                    <MudTh>Attribute Id</MudTh>
+                    <MudTh>Attribute Name</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Attribute Id">@context.AttributeId</MudTd>
+                    <MudTd DataLabel="Attribute Name">@context.AttributeName</MudTd>
+                </RowTemplate>
+            </MudTable>
+            <AddButton OnClick="AddAttribute"></AddButton>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public int GroupId { get; set; }
+    
+    [Inject] public IDialogService DialogService { get; set; } = default!;
+    
+    public AttributeGroupsDto Group { get; set; }
+    public List<AttributeDto> Attributes { get; set; } = new List<AttributeDto>();
+
+    public bool Loading { get; set; } = true;
+    protected override Task OnInitializedAsync()
+    {
+        // await LoadData();
+        Loading = false;
+        return base.OnInitializedAsync();
+    }
+
+    public async Task LoadData()
+    {
+    }
+
+    public async Task EditAttribute(TableRowClickEventArgs<AttributeDto?> args)
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Large
+        };
+        var dlg = await DialogService.ShowAsync<EditAttributeDialog>($"Edit Attribute: {args.Item.AttributeName}", options);
+    }
+
+    public async Task AddAttribute()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Large
+        };
+        var dlg = await DialogService.ShowAsync<AddAttributeDialog>($"Add Attribute", options);
+    }
+
+    void Save()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+}
