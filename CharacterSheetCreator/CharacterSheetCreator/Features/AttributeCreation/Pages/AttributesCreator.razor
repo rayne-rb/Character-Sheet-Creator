@@ -8,21 +8,26 @@
 
 <MudText Typo="Typo.h2">Attribute Groups</MudText>
 <MudGrid>
-    <MudItem xs="1">
-        <MudTooltip Text="Add Group">
-            <AddButton OnClick="AddAttributeGroup"/>
+    <MudItem xs="2">
+        <MudTooltip Text="Add an Attribute Group">
+            <AddButton WithText="true" Text="Add Group" OnClick="AddAttributeGroup"/>
         </MudTooltip>
     </MudItem>
+    <MudItem xs="10"></MudItem>
     @foreach (var group in AttributeGroups)
     {
-        <MudItem xs="3">
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="EditGroupAttributes">@group.AttributeGroupName</MudButton>
+        <MudItem>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="EditGroupAttributes">
+                <MudStack Spacing="1">
+                    <MudText Typo="Typo.h6">@group.AttributeGroupName</MudText>
+                    <MudText>Attributes: @group.Attributes.Count</MudText>
+                </MudStack>
+            </MudButton>
         </MudItem>
     }
 </MudGrid>
 
 @code {
-
     public List<AttributeGroupsDto> AttributeGroups { get; set; } = [];
 
     [Inject] public IDialogService DialogService { get; set; } = default!;
@@ -58,11 +63,11 @@
         };
 
         var dlg = await DialogService.ShowAsync<AddAttributeGroupDialog>("Add Group", options);
-        var dlgResult = dlg.Result.Result;
-        if (!dlgResult.Canceled)
+        // var dlgResult = dlg.Result.Result;
+        // if (!dlgResult.Canceled)
             
-        ShowSuccess("Attribute Created Successfully");
-        await LoadData();
+        // ShowSuccess("Attribute Created Successfully");
+        // await LoadData();
         StateHasChanged();
     } 
 

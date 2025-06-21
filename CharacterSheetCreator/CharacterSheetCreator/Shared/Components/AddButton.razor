@@ -1,7 +1,17 @@
 @using MudBlazor
 
-<MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(()=> OnClick.InvokeAsync())"/>
+@if (WithText == true)
+{
+    <MudButton StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(()=> OnClick.InvokeAsync())">@Text</MudButton>
+}
+else
+{
+    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(()=> OnClick.InvokeAsync())"/>
+}
+
 
 @code {
+    [Parameter] public bool? WithText { get; set; } = false;
+    [Parameter] public string? Text { get; set; } = "";
     [Parameter] public EventCallback<bool> OnClick { get; set; }
 }

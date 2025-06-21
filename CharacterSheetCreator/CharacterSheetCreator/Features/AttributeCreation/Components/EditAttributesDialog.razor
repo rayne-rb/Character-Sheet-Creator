@@ -28,7 +28,7 @@
     [Parameter] public int GroupId { get; set; }
     
     public AttributeGroupsDto Group { get; set; }
-    public List<AttributeDto> Attributes { get; set; }
+    public List<AttributeDto> Attributes { get; set; } = new List<AttributeDto>();
 
     public bool Loading { get; set; } = true;
     protected override Task OnInitializedAsync()
