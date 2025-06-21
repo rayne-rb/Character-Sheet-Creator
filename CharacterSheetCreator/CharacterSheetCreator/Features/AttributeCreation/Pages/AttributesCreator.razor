@@ -8,12 +8,15 @@
 
 <MudText Typo="Typo.h2">Attribute Groups</MudText>
 <MudGrid>
-    <MudItem xs="2">
+    <MudItem>
         <MudTooltip Text="Add an Attribute Group">
             <AddButton WithText="true" Text="Add Group" OnClick="AddAttributeGroup"/>
         </MudTooltip>
     </MudItem>
-    <MudItem xs="10"></MudItem>
+    <MudItem>
+        <MudIconButton Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Warning" OnClick="ShowHelp"/>
+    </MudItem>
+    <MudItem xs="12"></MudItem>
     @foreach (var group in AttributeGroups)
     {
         <MudItem>
@@ -78,4 +81,21 @@
         StateHasChanged();
     }
 
+    public async Task ShowHelp()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Large
+        };
+        List<string> helpTexts = ["Attributes are used in Selected Field Types when creating or using custom sheet types", 
+            "Attributes are placed into groups for ease of management",
+            "An example of an attribute could be \"Is immune to Fire\" in a group called \"Immunities\""];
+
+        var parameters = new DialogParameters()
+        {
+            {"HelpTexts", helpTexts}
+        };
+
+        var dlg = await DialogService.ShowAsync<HelpDialog>("What Are Attributes?", options: options, parameters: parameters);
+    }
 }

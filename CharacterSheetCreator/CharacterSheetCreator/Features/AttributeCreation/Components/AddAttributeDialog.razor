@@ -3,11 +3,11 @@
         <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
     </TitleContent>
     <DialogContent>
-        
+        <MudText>Fart</MudText>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Disabled="@()" Variant="Variant.Filled" Color="Color.Success" OnClick="Add">Add</MudButton>
+        <MudButton Disabled="@(false)" Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -16,7 +16,7 @@
 
     public async Task Add()
     {
-        
+        MudDialog.Close();
     }
     
     void Cancel()

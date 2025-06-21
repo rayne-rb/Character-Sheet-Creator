@@ -1,0 +1,31 @@
+@using MudBlazor
+
+<MudDialog>
+    <TitleContent>
+        <MudStack Row="true">
+            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Warning"/>
+            <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="1">
+            @foreach (var helpText in HelpTexts)
+            {
+                <MudText Typo="Typo.body2">@helpText</MudText>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+    [Parameter] public List<string?> HelpTexts { get; set; } = [];
+
+    private void Close()
+    {
+        MudDialog.Close();
+    }
+}
