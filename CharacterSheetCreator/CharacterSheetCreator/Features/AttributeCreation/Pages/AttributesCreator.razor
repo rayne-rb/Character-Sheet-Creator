@@ -20,7 +20,7 @@
     @foreach (var group in AttributeGroups)
     {
         <MudItem>
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="EditGroupAttributes">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" OnClick="_=> EditGroupAttributes(group.Id, group.AttributeGroupName)">
                 <MudStack Spacing="1">
                     <MudText Typo="Typo.h6">@group.AttributeGroupName</MudText>
                     <MudText>Attributes: @group.Attributes.Count</MudText>
@@ -44,7 +44,7 @@
 
     public async Task LoadData()
     {
-        var result = await AttributesService.GetAttributeGroups();
+        var result = await AttributesService.GetAllAttributeGroups();
         if (result.IsT1)
         {
             AttributeGroups = new List<AttributeGroupsDto>();
@@ -70,14 +70,18 @@
         StateHasChanged();
     } 
 
-    public async Task EditGroupAttributes()
+    public async Task EditGroupAttributes(int groupId, string groupName)
     {
         var options = new DialogOptions()
         {
             MaxWidth = MaxWidth.Large
         };
+        var parameters = new DialogParameters()
+        {
+            {"GroupId", groupId}
+        };
 
-        var dlg = await DialogService.ShowAsync<EditAttributeGroupDialog>("Edit Group Attributes", options);
+        var dlg = await DialogService.ShowAsync<EditAttributeGroupDialog>($"Edit {groupName}", options: options, parameters: parameters);
         StateHasChanged();
     }
 

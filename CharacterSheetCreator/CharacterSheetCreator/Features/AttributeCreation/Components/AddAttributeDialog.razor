@@ -1,21 +1,37 @@
+@using CharacterSheetCreator.Features.AttributeCreation.Services
+
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
+
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
     </TitleContent>
     <DialogContent>
-        <MudText>Fart</MudText>
+        <MudTextField T="string?" Label="Attribute Name" Variant="Variant.Outlined" @bind-Value="AttributeName"
+                      Immediate="true"></MudTextField>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Disabled="@(false)" Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add</MudButton>
+        <MudButton Disabled="@( string.IsNullOrEmpty(AttributeName) || string.IsNullOrWhiteSpace(AttributeName) )" Variant="Variant.Filled" Color="Color.Success" OnClick="@Add">Add</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+    
+    [Parameter] public int GroupId { get; set; }
+    
+    [Inject] public IAttributesService AttributesService { get; set; } = default!;
+    
+    public string? AttributeName { get; set; } = "";
 
     public async Task Add()
     {
+        var result = await AttributesService.CreateAttribute(GroupId, AttributeName);
+        if (result.IsT1)
+        {
+            await ShowError(result.AsT1.ErrorMessage);
+        }
         MudDialog.Close();
     }
     

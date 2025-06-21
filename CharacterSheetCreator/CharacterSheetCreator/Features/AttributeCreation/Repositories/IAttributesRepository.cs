@@ -9,5 +9,7 @@ public interface IAttributesRepository
 {
     Task<OneOf<List<DbAttributeGroup>, AppError>> GetAttributeGroups(); 
     Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection? connection = null, IDbTransaction? transaction = null);
-    Task<OneOf<List<DbAttribute>, AppError>> GetAttributes(int groupId); 
+    Task<OneOf<List<DbAttribute>, AppError>> GetAttributesByGroupId(int groupId); 
+    Task<OneOf<bool, AppError>> CreateAttribute(int groupId, string attributeName, IDbConnection? connection = null, IDbTransaction? transaction = null);
+    Task<OneOf<List<DbAttribute>, AppError>> GetAllAttributes(); 
 }

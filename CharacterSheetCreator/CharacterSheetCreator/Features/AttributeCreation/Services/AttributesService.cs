@@ -17,7 +17,7 @@ public class AttributesService : IAttributesService
         _connectionFactory = connectionFactory;
     }
 
-    public async Task<OneOf<List<AttributeGroupsDto>, AppError>> GetAttributeGroups()
+    public async Task<OneOf<List<AttributeGroupsDto>, AppError>> GetAllAttributeGroups()
     {
         try
         {
@@ -27,14 +27,24 @@ public class AttributesService : IAttributesService
                 return new AppError(results.AsT1.ErrorMessage);
             }
 
+            var attributesResult = await GetAllAttributes();
+            if (attributesResult.IsT1)
+            {
+                return new AppError(attributesResult.AsT1.ErrorMessage);
+            }
+            
             var mappedResults = new List<AttributeGroupsDto>();
             foreach (var result in results.AsT0)
             {
                 var mappedResult = new AttributeGroupsDto()
                 {
-                    AttributeGroupId = result.id,
+                    Id = result.id,
                     AttributeGroupName = result.group_name
                 };
+                foreach (var attribute in attributesResult.AsT0.Where(x => x.AttributeGroupId == mappedResult.Id))
+                {
+                    mappedResult.Attributes.Add(attribute);
+                }
                 mappedResults.Add(mappedResult);
             }
 
@@ -68,7 +78,7 @@ public class AttributesService : IAttributesService
     {
         try
         {
-            var results = await _attributesRepository.GetAttributes(groupId);
+            var results = await _attributesRepository.GetAttributesByGroupId(groupId);
             if (results.IsT1)
             {
                 return new AppError(results.AsT1.ErrorMessage);
@@ -82,7 +92,54 @@ public class AttributesService : IAttributesService
                     AttributeId = result.id,
                     AttributeName = result.attribute_name,
                     AttributeGroupId = result.attribute_group_id,
-                    AttributeType = result.attribute_type,
+                };
+                mappedResults.Add(mappedResult);
+            }
+
+            return mappedResults;
+        }
+        catch (Exception e)
+        {
+            return new AppError(e.Message);
+        }
+    }
+
+    public async Task<OneOf<bool, AppError>> CreateAttribute(int groupId, string attributeName)
+    {
+        try
+        {
+            var result = await _attributesRepository.CreateAttribute(groupId, attributeName);
+            if (result.IsT1)
+            {
+                return new AppError(result.AsT1.ErrorMessage);
+            }
+
+            return result.AsT0;
+        }
+        catch (Exception e)
+        {
+            return new AppError(e.Message);
+        }
+    }
+
+    public async Task<OneOf<List<AttributeDto>, AppError>> GetAllAttributes()
+    {
+        try
+        {
+            var results = await _attributesRepository.GetAllAttributes();
+            if (results.IsT1)
+            {
+                return new AppError(results.AsT1.ErrorMessage);
+            }
+
+            var mappedResults = new List<AttributeDto>();
+            foreach (var result in results.AsT0)
+            {
+                var mappedResult = new AttributeDto()
+                {
+                    AttributeId = result.id,
+                    AttributeName = result.attribute_name,
+                    AttributeGroupId = result.attribute_group_id,
                 };
                 mappedResults.Add(mappedResult);
             }

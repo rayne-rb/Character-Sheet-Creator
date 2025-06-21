@@ -17,20 +17,23 @@
                 <HeaderContent>
                     <MudTh>Attribute Id</MudTh>
                     <MudTh>Attribute Name</MudTh>
-                    <MudTh>Attribute Type</MudTh>
+                    <MudTh>Actions</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="Attribute Id">@context.AttributeId</MudTd>
+                    <MudTd Style="text-align: right" DataLabel="Attribute Id">@context.AttributeId</MudTd>
                     <MudTd DataLabel="Attribute Name">@context.AttributeName</MudTd>
-                    <MudTd DataLabel="Attribute Type">@context.AttributeType.ToDescriptionString()</MudTd>
+                    <MudTd Style="text-align: center" DataLabel="Actions">
+                        <MudIconButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.DeleteForever" OnClick="_=> DeleteAttribute(context.AttributeId)"/>
+                    </MudTd>
                 </RowTemplate>
             </MudTable>
-            <AddButton OnClick="AddAttribute"></AddButton>
+            <MudTooltip Visible="false">
+                <AddButton OnClick="AddAttribute"/>
+            </MudTooltip>
         </MudStack>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Save">Save</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Close">Close</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -42,7 +45,6 @@
     [Inject] public IDialogService DialogService { get; set; } = default!;
     [Inject] public IAttributesService AttributesService { get; set; } = default!;
     
-    public AttributeGroupsDto Group { get; set; }
     public List<AttributeDto> Attributes { get; set; } = new List<AttributeDto>();
 
     public bool Loading { get; set; } = true;
@@ -62,6 +64,7 @@
         }
 
         Attributes = attributesResult.AsT0;
+        StateHasChanged();
     }
 
     public async Task EditAttribute(TableRowClickEventArgs<AttributeDto?> args)
@@ -79,17 +82,22 @@
         {
             MaxWidth = MaxWidth.Large
         };
-        var dlg = await DialogService.ShowAsync<AddAttributeDialog>($"Add Attribute", options);
+        var parameters = new DialogParameters()
+        {
+            {"GroupId", GroupId}
+        };
+        var dlg = await DialogService.ShowAsync<AddAttributeDialog>($"Add Attribute", options: options, parameters: parameters);
+        await LoadData();
+        MudDialog.StateHasChanged();
     }
 
-    void Save()
+    public async Task DeleteAttribute(int id)
+    {
+        await ShowError("Not implemented yet");
+    }
+
+    void Close()
     {
         MudDialog.Close(DialogResult.Ok(true));
     }
-
-    void Cancel()
-    {
-        MudDialog.Cancel();
-    }
-
 }
