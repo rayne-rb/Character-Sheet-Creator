@@ -1,5 +1,27 @@
-<h3>AddAttributeDialog</h3>
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Disabled="@()" Variant="Variant.Filled" Color="Color.Success" OnClick="Add">Add</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
+
+    public async Task Add()
+    {
+        
+    }
     
+    void Cancel()
+    {
+        MudDialog.Close();
+    }
+
 }

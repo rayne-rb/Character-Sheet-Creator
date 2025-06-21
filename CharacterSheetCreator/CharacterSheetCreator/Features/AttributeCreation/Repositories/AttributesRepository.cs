@@ -36,7 +36,6 @@ public class AttributesRepository : IAttributesRepository
         {
             return new AppError($"Error getting attribute groups: {e.Message}");
         }
-        
     }
 
     public async Task<OneOf<bool, AppError>> CreateAttributeGroup(string groupName, IDbConnection? connection = null,
@@ -98,6 +97,28 @@ public class AttributesRepository : IAttributesRepository
                 transaction.Dispose();
                 connection.Dispose();
             }
+        }
+    }
+
+    public async Task<OneOf<List<DbAttribute>, AppError>> GetAttributes(int groupId)
+    {
+        await using var connection = _connectionFactory.GetDbConnection();
+        try
+        {
+            var sql = """
+                      SELECT * FROM attributes WHERE attribute_group_id = @group_id
+                      """;
+            var parameters = new {group_id = groupId};
+            var results = await connection.ExecuteQueryAsync<DbAttribute>(sql, parameters);
+            if (results == null)
+            {
+                return new List<DbAttribute>();
+            }
+            return results.ToList();
+        }
+        catch (Exception e)
+        {
+            return new AppError($"Error getting attribute groups: {e.Message}");
         }
     }
 }

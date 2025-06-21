@@ -1,6 +1,11 @@
 @using CharacterSheetCreator.Features.AttributeCreation.Models
+@using CharacterSheetCreator.Features.AttributeCreation.Services
 @using Microsoft.AspNetCore.Http.HttpResults
 @using CharacterSheetCreator.Shared.Components
+@using CharacterSheetCreator.Shared.Utilities
+
+@inherits CharacterSheetCreator.Shared.Utilities.UtilityComponents
+
 <MudDialog Style="height: 50%">
     <TitleContent>
         <MudText Typo="Typo.h6">@MudDialog.Title</MudText>
@@ -12,10 +17,12 @@
                 <HeaderContent>
                     <MudTh>Attribute Id</MudTh>
                     <MudTh>Attribute Name</MudTh>
+                    <MudTh>Attribute Type</MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Attribute Id">@context.AttributeId</MudTd>
                     <MudTd DataLabel="Attribute Name">@context.AttributeName</MudTd>
+                    <MudTd DataLabel="Attribute Type">@context.AttributeType.ToDescriptionString()</MudTd>
                 </RowTemplate>
             </MudTable>
             <AddButton OnClick="AddAttribute"></AddButton>
@@ -33,20 +40,28 @@
     [Parameter] public int GroupId { get; set; }
     
     [Inject] public IDialogService DialogService { get; set; } = default!;
+    [Inject] public IAttributesService AttributesService { get; set; } = default!;
     
     public AttributeGroupsDto Group { get; set; }
     public List<AttributeDto> Attributes { get; set; } = new List<AttributeDto>();
 
     public bool Loading { get; set; } = true;
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        // await LoadData();
+        await LoadData();
         Loading = false;
-        return base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
 
     public async Task LoadData()
     {
+        var attributesResult = await AttributesService.GetAttributes(GroupId);
+        if (attributesResult.IsT1)
+        {
+            await ShowError(attributesResult.AsT1.ErrorMessage);
+        }
+
+        Attributes = attributesResult.AsT0;
     }
 
     public async Task EditAttribute(TableRowClickEventArgs<AttributeDto?> args)
